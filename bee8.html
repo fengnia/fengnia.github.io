@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>你将去往何方？</title>
+  <style>
+    .headPart {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+    }
+    .h1part {
+      width: 14%;
+      display: inline-block;
+    }
+    .h1part span {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .h2part {
+      width: 68%;
+      display: inline-block;
+    }
+    .h3part {
+      width: 14%;
+      display: inline-block;
+    }
+    .progress-container,
+    .progress-container .progress {
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-container {
+      background-color: rgba(0, 0, 0, .1)
+    }
+    .progress-container .progress {
+      width: 0%;
+      background-color: #ffde2d;
+    }
+    .quesPart {}
+    .quesPart h1 {
+      font-size: 18px;
+    }
+    .quesPart .answerList {
+      list-style: none;
+      padding: 0px;
+    }
+    .quesPart .answerList li {
+      border: 1px solid #e3dbdb;
+      margin: 10px;
+      padding: 10px 20px 10px 20px;
+      border-radius: 10px;
+    }
+    .quesPart .answerList li .opt {
+      display: inline-block;
+      width: 7%;
+      text-align: left;
+    }
+    .quesPart .answerList li .optContent {
+      display: inline-block;
+      width: 80%;
+    }
+    .quesPart .answerList li .optRadio {
+      display: inline-block;
+      width: 7%;
+    }
+
+
+    input[type='radio']:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      top: -2px;
+      left: -1px;
+      position: relative;
+      background-color: #fff;
+      content: '';
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid #ffde2d;
+    }
+
+
+
+    input[type='radio']:checked:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 12px;
+      top: -2px;
+      left: -1px;
+      position: relative;
+      background-color: #ffde2d;
+      content: '';
+      display: inline-block;
+      visibility: visible;
+      border: 2px solid white;
+    }
+
+    .footerPart button {
+      background-color: #ffde2d;
+      width: 95%;
+      height: 40px;
+      margin: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="headPart">
+    <div class="h1part quesNum"><span>16</span>/27</div>
+    <div class="h2part progress-container">
+      <div class="progress"></div>
+    </div>
+    <div class="h3part countDown">倒计时</div>
+  </div>
+
+  <div class="quesPart">
+    <h1>？</h1>
+
+    <ul class="answerList">
+      <li>
+        <div class="opt">A</div>
+        <label class="optContent" for="A">
+
+        </label>
+        <div class="optRadio">
+          <input id="A" type="radio" name="16" value="A">
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="footerPart">
+    <button>上一题</button>
+  </div>
+  <script>
+
+    let quesList = []
+
+    let userAnsList = []
+
+    let curIndex = 0
+
+    let answerObj = {
+
+      A: {
+
+        min: 18,
+
+        max: 25,
+
+        content: '未来和现在或许从未发生任何改变，如同过去一样'
+
+      },
+
+      B: {
+
+        min: 28,
+
+        max: 32,
+
+        content: '你曾经也思考过箱子里的猫的问题，但现在“小猫咪们，如果我们不打开这个箱盖，就永远不会知道外面的人类是死的还是活着的”'
+
+      },
+
+      C: {
+
+        min: 33,
+
+        max: 40,
+
+        content: '如果我告诉你这件事的答案，那么又有谁来解答我的困惑呢？'
+
+      },
+
+      D: {
+
+        min: 41,
+
+        max: 50,
+
+        content: '“我想回家”'
+
+      }
+
+    }
+
+    quesList.addQuestion = function (id, title, answer, optA, optB, optC, optD) {
+
+
+      let ques = {
+
+        id: id,
+
+        title: title,
+
+        answer: answer,
+
+        optList: [optA, optB, optC, optD]
+
+      }
+
+      this.push(ques)
+
+    }
+
+    quesList.addQuestion(1, '你曾经有一把钥匙，它是？', '', '银行保险柜的钥匙', '家的钥匙', '通往异世界的钥匙', '只是个装饰')
+
+    quesList.addQuestion(2, '它看起来如何？', '', '很干净', '和其它人的的没什么区别', '这是刚从地里刨出来的吗？', '造型复古，且非常精美')
+
+    quesList.addQuestion(3, '你的钥匙丢了，它是怎么丢的？', '', '被偷了', '被*超级无敌可爱*的鸟叼走了', '滑铲拯救拯救快要被车撞的小孩时，钥匙不慎调出来落进了下水道', '我不知道啊，某天一摸口袋它就不见了')
+
+    quesList.addQuestion(4, '你决定去什么地方寻找你的钥匙？', '', '黑暗', '高处', '水中', '丢了就丢了吧，不找了')
+
+    quesList.addQuestion(5, '现在的时间是？', '', '不好意思，请问您想问哪个时区的时间？', '我不知道', '现在的时间就是现在', '为什么我要回答这个问题')
+
+    quesList.addQuestion(6, '离开？', '', '离开哪？', '这里', '我不明白你在说什么', '我想留下来……')
+
+    quesList.addQuestion(7, '哦，你的钥匙回来了，它突然出现在……', '', '口袋里', '桌上', '水池里', '午饭里')
+
+    quesList.addQuestion(8, '很高兴与你交谈', '', '高兴', '喜悦', '欣喜', '困惑')
+
+    quesList.addQuestion(9, '再见', '', '再见', 'Good bye', 'さようなら', 'Φθινόπωρο')
+
+
+    console.log(quesList)
+
+    let quesTitle = document.querySelector('.quesPart h1')
+
+    let answerList = document.querySelector('.answerList')
+    let pgIn = document.querySelector('.progress')
+
+
+    let countDownDom = document.querySelector('.countDown')
+
+    let prevBtn = document.querySelector('.footerPart button')
+
+    function renderQues(ques) {
+
+      quesTitle.innerHTML = ques.id + '.' + ques.title
+
+      answerList.innerHTML = ''
+      ques.optList.forEach((opt, index) => {
+
+        let optLi = document.createElement('li')
+
+        let optChar = String.fromCharCode(65 + index)
+
+        optLi.innerHTML = `
+
+          <div class="opt">${optChar}</div>
+
+          <label class="optContent" for="${optChar}">${opt}</label>
+
+          <div class="optRadio">
+
+            <input id="${optChar}" type="radio" name="${ques.id}" value="${optChar}">
+
+          </div>
+
+        `
+
+        optLi.querySelector('label').addEventListener('click', function (e) {
+
+          e.stopPropagation()
+
+        })
+
+        optLi.setAttribute('data-char', optChar)
+        optLi.addEventListener('click', nextQues)
+
+        answerList.appendChild(optLi)
+
+      })
+
+    }
+
+    renderQues(quesList[curIndex])
+
+    renderQuesNum()
+
+    function startTimeing() {
+
+
+      window.countSec = 1800;
+
+      window.timerId = setInterval(function () {
+
+        countDown(countSec)
+
+      }, 1000)
+
+    }
+
+    startTimeing()
+
+    function countDown(time) {
+
+      let min = Math.floor(time / 60)
+
+      let sec = time % 60
+
+      let minStr = min < 10 ? '0' + min : min
+
+      let secStr = sec < 10 ? '0' + sec : sec
+
+      countDownDom.innerHTML = `${minStr}:${secStr}`
+
+      if (time === 0) {
+
+        calcScore()
+
+        clearInterval(timerId)
+
+      } else {
+
+        countSec--
+
+      }
+
+    }
+
+
+    function nextQues() {
+
+      let optChar = this.getAttribute('data-char')
+
+      if (curIndex === userAnsList.length) {
+
+        userAnsList.push(optChar)
+
+      } else {
+
+        userAnsList[curIndex] = optChar
+
+      }
+
+      if (curIndex < quesList.length - 1) {
+
+        curIndex++
+
+        renderQues(quesList[curIndex])
+
+        renderQuesNum()
+
+        if (curIndex < userAnsList.length) {
+
+          setAnswerChecked()
+
+        }
+
+      } else {
+
+        calcScore()
+
+      }
+
+    }
+
+    function renderQuesNum() {
+
+      let quesNum = document.querySelector('.quesNum')
+
+      quesNum.innerHTML = `<span>${curIndex + 1}</span>/${quesList.length}`
+
+      let pgWidth = (curIndex + 1) / quesList.length * 100 + '%'
+
+      pgIn.style.width = pgWidth
+
+    }
+    function calcScore() {
+      quesTitle.innerHTML = '或许……：'
+      let score = 0
+      userAnsList.forEach((ans, index) => {
+        switch (ans) {
+          case "A": {
+            score += 2
+            break;
+          }
+          case "B": {
+            score += 3
+            break;
+          }
+          case "C": {
+            score += 4
+            break;
+          }
+          case "D": {
+            score += 5
+            break;
+          }
+        }
+      })
+      answerList.innerHTML = ''
+      let totalScoreLi = document.createElement('li')
+      totalScoreLi.innerHTML = `总分数：${score}`
+      answerList.appendChild(totalScoreLi)
+      for (let key in answerObj) {
+        let val = answerObj[key]
+        if (score >= val.min && score <= val.max) {
+          let result = val.content
+          let resultLi = document.createElement('li')
+          resultLi.innerHTML = result
+          answerList.appendChild(resultLi)
+        }
+      }
+    }
+
+    prevBtn.addEventListener('click', function () {
+      if (curIndex > 0) {
+        curIndex--
+        renderQues(quesList[curIndex])
+        renderQuesNum()
+        setAnswerChecked()
+      } else {
+        alert('如果你打算离开……不是这里')
+      }
+    })
+    function setAnswerChecked() {
+      let optChar = userAnsList[curIndex]
+      let optIndex = optChar.charCodeAt() - 65
+      answerList.children[optIndex].querySelector('.optRadio input').checked = true
+
+    }
+
+  </script>
+
+</body>
+
+</html>
